@@ -12,157 +12,163 @@ export default function HostAnalyticsDashboard({ onNavigate }: Props) {
   return (
     <div className="flex h-screen overflow-hidden bg-surface">
       {/* SideNavBar */}
-      <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-outline-variant z-40 hidden md:flex flex-col p-4 shadow-sm">
+      <aside className="fixed left-0 top-0 h-full w-64 glass-panel border-r-0 shadow-2xl shadow-primary/5 pt-20 z-40 hidden md:flex flex-col p-4">
         <div className="mb-8 px-2 flex items-center gap-3">
-          <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-white font-bold">H</div>
-          <span className="font-semibold text-lg tracking-tight text-on-surface">HostPortal</span>
+          <div className="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center">
+            <span className="material-symbols-outlined text-white">architecture</span>
+          </div>
+          <div>
+            <h2 className="text-blue-900 font-black leading-tight text-sm">Precision Editorial</h2>
+            <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Architectural Curator</p>
+          </div>
         </div>
         
-        <div className="mb-6">
-          <label className="text-[10px] font-bold text-outline uppercase tracking-wider mb-3 block px-3">Analytics</label>
-          <nav className="space-y-1">
-            <NavItem icon={<LayoutDashboard size={18} />} label="Overview" active />
-            <NavItem icon={<BarChart3 size={18} />} label="Performance" />
-            <NavItem icon={<ArrowUpRight size={18} />} label="Revenue Hub" />
-          </nav>
-        </div>
+        <nav className="flex-1 space-y-1">
+          <NavItem icon={<LayoutDashboard size={20} />} label="Overview" active />
+          <NavItem icon={<MessageSquare size={20} />} label="Messages" />
+          <NavItem icon={<Users size={20} />} label="Team" />
+          <NavItem icon={<BarChart3 size={20} />} label="Reports" />
+          <NavItem icon={<Archive size={20} />} label="Archive" />
+        </nav>
 
-        <div className="mb-6">
-          <label className="text-[10px] font-bold text-outline uppercase tracking-wider mb-3 block px-3">Management</label>
-          <nav className="space-y-1">
-            <NavItem icon={<MessageSquare size={18} />} label="Messages" />
-            <NavItem icon={<Users size={18} />} label="Team" />
-            <NavItem icon={<Archive size={18} />} label="Archive" />
-          </nav>
-        </div>
-
-        <div className="mt-auto pt-4 border-t border-outline-variant space-y-1">
-          <NavItem icon={<HelpCircle size={18} />} label="Help Center" />
-          <NavItem icon={<LogOut size={18} />} label="Logout" />
+        <div className="pt-4 border-t border-surface-container-high space-y-1">
+          <NavItem icon={<HelpCircle size={20} />} label="Help" />
+          <NavItem icon={<LogOut size={20} />} label="Logout" />
         </div>
       </aside>
 
       <div className="flex-1 flex flex-col md:ml-64 overflow-y-auto">
         {/* TopNavBar */}
-        <header className="fixed top-0 right-0 left-0 md:left-64 h-14 bg-white border-b border-outline-variant z-30 flex justify-between items-center px-6">
+        <header className="fixed top-0 right-0 left-0 md:left-64 h-16 glass-panel z-30 flex justify-between items-center px-6">
           <div className="flex items-center gap-8">
-            <span className="text-lg font-bold tracking-tighter text-on-surface md:hidden">HostPortal</span>
+            <span className="text-lg font-bold tracking-tighter text-blue-900 md:hidden">Axiom Carbon</span>
             <nav className="hidden md:flex gap-6 items-center">
-              <a href="#" className="font-medium text-sm text-primary border-b-2 border-primary h-14 flex items-center">Dashboard</a>
+              <a href="#" className="font-medium text-sm text-blue-700 border-b-2 border-primary pb-1">Dashboard</a>
               <button 
                 onClick={() => onNavigate(View.ACTION_MODAL)}
-                className="font-medium text-sm text-on-surface-variant hover:text-on-surface transition-colors h-14 flex items-center"
+                className="font-medium text-sm text-on-surface-variant hover:text-primary transition-colors"
                 id="workspace-link"
               >
                 Workspace
               </button>
-              <a href="#" className="font-medium text-sm text-on-surface-variant hover:text-on-surface transition-colors h-14 flex items-center">Reporting</a>
+              <a href="#" className="font-medium text-sm text-on-surface-variant hover:text-primary transition-colors">Analytics</a>
             </nav>
           </div>
           <div className="flex items-center gap-4">
-            <button className="p-2 text-outline hover:text-on-surface-variant transition-colors relative">
+            <button className="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors relative">
               <Bell size={20} />
             </button>
-            <button className="p-2 text-outline hover:text-on-surface-variant transition-colors">
+            <button className="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors">
               <Settings size={20} />
             </button>
             <button 
               onClick={() => onNavigate(View.ACTION_MODAL)}
-              className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium shadow-sm hover:bg-primary-container transition-all"
+              className="bg-primary text-white px-4 py-1.5 rounded-xl text-sm font-semibold active:scale-95 transition-all shadow-lg shadow-primary/20"
             >
-              Escalate Issue
+              Escalate
             </button>
-            <div className="h-8 w-8 rounded-full bg-surface-container border border-outline-variant">
-              <img className="rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoA4YhkmGNa9Be7xLoE1JTdDNjkuplF1BdVO8SBE-g2HudXgWBgjkL9Bwr0r2on2s8fsAOs9_gl0n4ukFU84SuWPKvU2QvocxFngAIhbis1BlYmJjkn5_0qJrwMRpLUTyRaH80h4pR62nMG_d7byCg0O0rXTx_eANVaeLEwlAnEuswf7eZiwCFJ6vjYYn7IxLYUuNqHKmeRDjcky0sHoPv_uTxzqSr8BZBuvGD4x7TNqNU96zNcCzIQOraaOc4U5dXGbMjyrSdXIQ" alt="Profile" />
+            <div className="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoA4YhkmGNa9Be7xLoE1JTdDNjkuplF1BdVO8SBE-g2HudXgWBgjkL9Bwr0r2on2s8fsAOs9_gl0n4ukFU84SuWPKvU2QvocxFngAIhbis1BlYmJjkn5_0qJrwMRpLUTyRaH80h4pR62nMG_d7byCg0O0rXTx_eANVaeLEwlAnEuswf7eZiwCFJ6vjYYn7IxLYUuNqHKmeRDjcky0sHoPv_uTxzqSr8BZBuvGD4x7TNqNU96zNcCzIQOraaOc4U5dXGbMjyrSdXIQ" alt="Profile" />
             </div>
           </div>
         </header>
 
-        <main className="p-8 mt-14 max-w-5xl w-full mx-auto">
-          <header className="mb-8 flex justify-between items-end">
-            <div>
-              <h1 className="text-2xl font-bold text-on-surface leading-tight">Host Analytics Dashboard</h1>
-              <p className="text-on-surface-variant text-sm mt-1">Performance summary for Dec 1 - Dec 31, 2023</p>
-            </div>
+        <main className="p-8 mt-16 max-w-7xl w-full mx-auto">
+          <header className="mb-10">
+            <h1 className="text-[2.75rem] font-bold tracking-tight text-on-surface leading-none mb-2">Host Analytics</h1>
+            <p className="text-on-surface-variant font-medium">Real-time engagement and performance metrics across all channels.</p>
           </header>
 
-          <div className="grid grid-cols-3 gap-6 mb-8 group/grid">
-            <div className="bg-white p-6 rounded-xl border border-outline-variant shadow-sm transition-shadow hover:shadow-md">
-              <p className="text-xs font-bold text-outline uppercase tracking-wide">Occupancy Rate</p>
-              <p className="text-3xl font-light text-on-surface mt-1">84.2%</p>
-              <div className="mt-4 h-1 bg-surface-container rounded-full overflow-hidden text-emerald-500">
-                <div className="h-full bg-secondary w-[84%]"></div>
-              </div>
-            </div>
-            
-            <div className="bg-white p-6 rounded-xl border border-outline-variant shadow-sm transition-shadow hover:shadow-md">
-              <p className="text-xs font-bold text-outline uppercase tracking-wide">Total Bookings</p>
-              <p className="text-3xl font-light text-on-surface mt-1">1,248</p>
-              <p className="text-xs text-secondary mt-2 font-medium">↑ 12% vs last month</p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl border border-outline-variant shadow-sm transition-shadow hover:shadow-md">
-              <p className="text-xs font-bold text-outline uppercase tracking-wide">Revenue</p>
-              <p className="text-3xl font-light text-on-surface mt-1">$42,850</p>
-              <p className="text-xs text-outline mt-2">Net earnings after fees</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-12 md:col-span-8">
-              <div className="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
-                <div className="p-4 border-b border-surface-container-low flex justify-between items-center">
-                  <h3 className="font-semibold text-on-surface">Critical Threads</h3>
-                  <button className="text-xs font-medium text-primary hover:underline uppercase tracking-tighter">View All Tickets</button>
+          <div className="grid grid-cols-12 gap-6 auto-rows-[160px]">
+            {/* Hero Metric */}
+            <div className="col-span-12 md:col-span-8 row-span-2 bg-gradient-to-br from-primary to-primary-container rounded-xl p-8 text-white relative overflow-hidden group">
+              <div className="relative z-10 h-full flex flex-col justify-between">
+                <div>
+                  <span className="text-on-primary-container uppercase tracking-widest text-[10px] font-bold">Performance Pulse</span>
+                  <h3 className="text-4xl font-extrabold mt-2">92.4% <span className="text-xl font-normal opacity-80">Engagement</span></h3>
                 </div>
-                <div className="divide-y divide-surface-container-low">
-                  <ThreadItem initials="JD" name="Julien Moore" subject="Seaside Retreat #402" tag="IN PROGRESS" tagColor="bg-amber-50 text-amber-700" />
-                  <ThreadItem initials="AM" name="Aisha Mahrez" subject="Modern Loft Downtown" tag="QUEUED" tagColor="bg-slate-100 text-slate-600" />
-                  <ThreadItem initials="BS" name="Bennet Sullivan" subject="Luxury Penthouse Suite" tag="CRITICAL" tagColor="bg-error-container text-on-error-container" />
+                <div className="flex items-end gap-2 h-32">
+                  <Bar height="60%" className="opacity-20 group-hover:h-[70%]" />
+                  <Bar height="50%" className="opacity-40 group-hover:h-[60%]" />
+                  <Bar height="70%" className="opacity-20 group-hover:h-[80%]" />
+                  <Bar height="40%" className="opacity-40 group-hover:h-[50%]" />
+                  <Bar height="80%" className="opacity-60 group-hover:h-[65%]" />
+                  <Bar height="55%" className="opacity-30 group-hover:h-[65%]" />
+                  <Bar height="70%" className="opacity-50 group-hover:h-[80%]" />
                 </div>
               </div>
+              <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
             </div>
 
-            <div className="col-span-12 md:col-span-4 space-y-6">
-              <div className="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
-                <div className="flex justify-between items-start mb-4">
-                  <span className="text-xs font-bold text-outline uppercase tracking-wide">Sentiment score</span>
-                  <span className="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-1 rounded font-bold">POSITIVE</span>
+            {/* Sentiment */}
+            <div className="col-span-12 md:col-span-4 row-span-2 bg-surface-container-low rounded-xl p-6 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-start">
+                  <span className="material-symbols-outlined text-secondary text-3xl">mood</span>
+                  <span className="bg-secondary-fixed text-on-secondary-fixed-variant text-[10px] px-2 py-1 rounded-full font-bold">POSITIVE</span>
                 </div>
-                <p className="text-3xl font-light text-on-surface">8.4</p>
-                <div className="mt-6 space-y-4">
-                  <Progress label="JOY" value={75} color="bg-secondary" />
-                  <Progress label="TRUST" value={88} color="bg-tertiary" />
-                </div>
+                <h4 className="text-2xl font-bold mt-4">8.4 Sentiment</h4>
+                <p className="text-on-surface-variant text-sm mt-1">Based on recent 450 messages</p>
               </div>
+              <div className="space-y-4">
+                <Progress label="JOY" value={75} color="bg-secondary" />
+                <Progress label="TRUST" value={88} color="bg-tertiary" />
+              </div>
+            </div>
 
-              <div className="bg-indigo-900 text-white p-6 rounded-xl shadow-lg relative overflow-hidden group">
-                <div className="relative z-10">
-                  <h3 className="font-bold text-sm uppercase tracking-widest opacity-70">Team availability</h3>
-                  <p className="text-2xl font-light mt-1">12 Agents Online</p>
-                  <button className="mt-4 text-xs font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
-                    Open Support Hub <ArrowUpRight size={14} />
-                  </button>
-                </div>
-                <div className="absolute -right-6 -bottom-6 opacity-10 group-hover:scale-110 transition-transform duration-500">
-                  <span className="material-symbols-outlined text-8xl">support_agent</span>
-                </div>
+            {/* Response Volume */}
+            <div className="col-span-12 md:col-span-4 row-span-2 bg-surface-container-lowest rounded-xl p-6 flex flex-col justify-between group shadow-sm border border-transparent hover:border-outline-variant/30 transition-colors">
+              <div className="flex justify-between items-center">
+                <h4 className="font-bold text-on-surface">Response Volume</h4>
+                <ArrowUpRight size={20} className="text-on-surface-variant" />
               </div>
+              <div className="flex items-center gap-2">
+                <span className="text-3xl font-black">2.4k</span>
+                <span className="text-green-600 text-xs font-bold">+12.4%</span>
+              </div>
+              <div className="h-24 flex items-end gap-1 px-1">
+                {[4, 6, 8, 5, 10, 6, 7].map((h, i) => (
+                  <div key={i} className={cn("w-2 rounded-full transition-all duration-300", i === 4 ? "bg-primary h-5/6" : "bg-primary/10 group-hover:bg-primary/30 h-" + (h*10) + "%")} style={{ height: `${h*10}%` }}></div>
+                ))}
+              </div>
+            </div>
+
+            {/* Critical Threads */}
+            <div className="col-span-12 md:col-span-8 row-span-3 bg-surface-container-low rounded-xl p-8">
+              <div className="flex justify-between items-center mb-6">
+                <h4 className="font-bold text-lg">Critical Threads</h4>
+                <button className="text-xs font-bold text-primary hover:underline">View All</button>
+              </div>
+              <div className="space-y-4">
+                <ThreadItem initials="JD" name="Julien Davenport" subject="Project Phoenix Deployment" tag="REVIEW REQ" tagColor="text-tertiary bg-tertiary-fixed" />
+                <ThreadItem initials="AM" name="Aisha Mahrez" subject="Survey feedback: UI consistency updates" tag="SURVEY" tagColor="text-secondary bg-secondary-fixed" />
+                <ThreadItem initials="BS" name="Bennet Sullivan" subject="Escalation: Server latency in region EU-1" tag="CRITICAL" tagColor="text-on-error-container bg-error-container" />
+              </div>
+            </div>
+
+            {/* Team Availability */}
+            <div className="col-span-12 md:col-span-4 row-span-1 bg-tertiary text-white rounded-xl p-6 flex items-center justify-between group overflow-hidden relative">
+              <div className="relative z-10 transition-transform group-hover:translate-x-1 duration-300">
+                <p className="text-[10px] font-bold opacity-70">TEAM AVAILABILITY</p>
+                <p className="text-xl font-bold">12 Agents Online</p>
+              </div>
+              <span className="material-symbols-outlined text-4xl opacity-30 group-hover:scale-110 transition-transform relative z-10 duration-300">support_agent</span>
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
           </div>
         </main>
       </div>
 
       {/* Floating Messaging FAB */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-8 right-8 z-50">
         <button 
           aria-label="Open messaging"
           id="messaging-fab"
           onClick={() => onNavigate(View.COMPACT_MESSAGING)}
-          className="relative flex items-center justify-center w-12 h-12 bg-primary text-white rounded-full shadow-2xl hover:bg-primary-container hover:scale-110 active:scale-95 transition-all duration-300 group"
+          className="relative flex items-center justify-center w-14 h-14 bg-primary text-white rounded-full shadow-2xl hover:shadow-primary/30 hover:scale-110 active:scale-95 transition-all duration-300 group"
         >
-          <span className="material-symbols-outlined text-2xl">chat</span>
-          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-error text-[10px] font-bold text-white ring-2 ring-white">2</span>
+          <span className="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">chat</span>
+          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-error text-[10px] font-bold text-white ring-2 ring-surface">2</span>
         </button>
       </div>
     </div>

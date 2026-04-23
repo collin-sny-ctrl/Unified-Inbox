@@ -24,16 +24,13 @@ export default function ExpandedWorkspaceOverlay({ onNavigate, onClose }: Props)
         className="bg-surface shadow-2xl shadow-primary/20 rounded-xl w-full max-w-7xl h-full flex flex-col overflow-hidden ambient-shadow ring-1 ring-outline-variant/15"
       >
         {/* Top Bar */}
-        <header className="h-14 flex items-center justify-between px-6 bg-white z-10 border-b border-outline-variant">
+        <header className="h-16 flex items-center justify-between px-6 bg-surface-container-lowest/80 backdrop-blur-3xl z-10 border-b border-surface-container-high">
           <div className="flex items-center gap-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-white font-bold text-sm">H</div>
-              <span className="font-semibold text-lg tracking-tight text-on-surface">HostPortal</span>
-            </div>
+            <span className="text-blue-900 font-bold tracking-tighter text-lg">Axiom Carbon</span>
             <nav className="hidden md:flex items-center gap-6 ml-8">
-              <a href="#" className="font-medium text-sm text-on-surface-variant hover:text-on-surface transition-colors">Dashboard</a>
-              <a href="#" className="font-medium text-sm text-primary border-b-2 border-primary h-14 flex items-center">Workspace</a>
-              <a href="#" className="font-medium text-sm text-on-surface-variant hover:text-on-surface transition-colors">Reporting</a>
+              <a href="#" className="font-medium text-sm text-on-surface-variant hover:text-primary transition-colors">Dashboard</a>
+              <a href="#" className="font-medium text-sm text-blue-700 border-b-2 border-primary pb-1">Workspace</a>
+              <a href="#" className="font-medium text-sm text-on-surface-variant hover:text-primary transition-colors">Analytics</a>
             </nav>
           </div>
           <div className="flex items-center gap-3">
@@ -44,34 +41,35 @@ export default function ExpandedWorkspaceOverlay({ onNavigate, onClose }: Props)
               <span className="text-sm font-semibold tracking-tight">Ticket #12345</span>
               <ExternalLink size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
-            <div className="h-8 w-[1px] bg-outline-variant mx-1"></div>
+            <div className="h-8 w-[1px] bg-outline-variant/30 mx-1"></div>
             <button 
               onClick={() => onNavigate(View.ACTION_MODAL)}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-medium rounded-md shadow-sm hover:bg-primary-container transition-all"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-primary-container text-white text-sm font-semibold rounded-lg shadow-sm hover:opacity-90 active:scale-95 transition-all"
             >
-              Escalate Issue
+              Escalate
             </button>
-            <button className="p-2 text-outline hover:text-on-surface transition-colors">
+            <button className="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors">
               <Search size={18} />
             </button>
             <button 
               id="close-workspace"
               onClick={onClose} 
-              className="p-2 text-outline hover:text-error transition-colors" 
+              className="p-2 text-on-surface-variant hover:bg-error-container hover:text-error rounded-lg transition-colors flex items-center gap-1"
             >
               <X size={20} />
+              <span className="sr-only">close</span>
             </button>
           </div>
         </header>
 
         <div className="flex-1 flex overflow-hidden">
           {/* Left Column: Inbox */}
-          <section className="w-80 flex flex-col bg-white border-r border-outline-variant">
+          <section className="w-80 flex flex-col bg-surface-container-low border-r border-surface-container-high">
             <div className="p-5 flex items-center justify-between">
-              <h3 className="text-[10px] font-bold uppercase tracking-wider text-outline">Priority Inbox</h3>
-              <Search size={16} className="text-outline cursor-pointer" />
+              <h3 className="text-xs font-black uppercase tracking-widest text-on-surface-variant">Priority Inbox</h3>
+              <Search size={16} className="text-on-surface-variant cursor-pointer" />
             </div>
-            <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-1 no-scrollbar">
+            <div className="flex-1 overflow-y-auto px-2 pb-4 space-y-1 no-scrollbar">
               <InboxItem 
                 active 
                 name="Julianne Moore" 
@@ -87,18 +85,18 @@ export default function ExpandedWorkspaceOverlay({ onNavigate, onClose }: Props)
 
           {/* Center Column: Thread */}
           <section className="flex-1 flex flex-col bg-surface">
-            <div className="px-8 py-4 flex items-center justify-between bg-white border-b border-outline-variant">
+            <div className="px-8 py-6 flex items-center justify-between bg-surface-container-lowest/50 border-b border-surface-container-high">
               <div className="flex items-center gap-4">
                 <img 
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxbgEae6ZlFpYS2poGlLfN4PnRXxhqP6tY8iA0I4RhbSRuzCDm-8QJbIP1Ngqhf3CMkx2u5HM2VdKm97WmUFXGydPUggHiDJ0dBcVTqZTYFRjbmqWyUDT8JKuj8kC8Vu24HT9LvnLKMnWd9dOy9Puh151E-qEUMXWHcxv25EyXy7hfBl0usuXq9pIJPZrAP8Kv--BFVjlNLc1F1GBiKSXQ3fZkl1kZL5CfLZeYvwxjE-SmYne5i8fvOrFovwgMtBUPbkyFUk64d54" 
                   alt="Julianne Moore" 
-                  className="w-10 h-10 rounded-full object-cover border border-outline-variant"
+                  className="w-12 h-12 rounded-full object-cover shadow-sm ring-1 ring-outline-variant/10"
                 />
                 <div>
-                  <h2 className="text-base font-bold text-on-surface leading-none">Julianne Moore</h2>
+                  <h2 className="text-lg font-bold text-on-surface tracking-tight leading-none">Julianne Moore</h2>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                    <span className="text-[11px] font-medium text-on-surface-variant">Lead Designer</span>
+                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span className="text-xs font-medium text-on-surface-variant">Lead Designer · Seattle, WA</span>
                   </div>
                 </div>
               </div>
@@ -109,7 +107,7 @@ export default function ExpandedWorkspaceOverlay({ onNavigate, onClose }: Props)
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-8 space-y-6 no-scrollbar">
+            <div className="flex-1 overflow-y-auto p-8 space-y-8 bg-surface-container-lowest/20 no-scrollbar">
               <Message 
                 avatar="https://lh3.googleusercontent.com/aida-public/AB6AXuBlRiuZ6vRTrJfRWGkUcIkYxBzX9Q362U0Yn58q3f7mBV63Z1gNAgZkwDFE8ADdn4seWmYjyWHVQUKafzgCtkQ-R8WA6ohGaorMNb2B_5WXyNTemwFbKp99Dv4ONVA3cv4duaXFossfRfAqtixIzywDg9us5Tj7Pdg6rGFid9gVsWo2hVIXjzVGQaBH7DpbYQ_WZyJqfpwEifzY5Vjo4PrP0wMhG3-1N4C7tjiV7p1u37y_w2bcepGkV0yFb5UmO-HT8NA-q-SmNJU"
                 name="Julianne Moore"
@@ -121,21 +119,27 @@ export default function ExpandedWorkspaceOverlay({ onNavigate, onClose }: Props)
                 text="I've noticed that too. I'll adjust the Tailwind config to use a custom 840px breakpoint for the grid collapse. Does that work for your latest mockups?"
                 time="12:48 PM"
               />
+              <Message 
+                avatar="https://lh3.googleusercontent.com/aida-public/AB6AXuCaBSnSACH9Jt_fTU-z2X-2AdE_F3RzLALqrvzq3Ds3lTkCB6756z-vbVMi-q5EwBMDO7WpUiZTTAzQu1i5fK6vDhbZ0wh9Wa5zztPdwH5LYJsL7vh-WCUJdE1bQpRjjIbuz5jXJer1p5vhOzH8FYoySXfWEVwZgfejqa4GVEblZSaONPgX5nJvzJFPP1kkWW-NPPs4rfh9QOEldMrBL5UGcVtTYHcdRYtR1ouAM3hw7fFWzY7H2mH_qYcesu0hL8UPYrzCoLTdbnY"
+                name="Julianne Moore"
+                text="Perfect. I’ve uploaded the updated assets to the shared workspace. Let's touch base after the Escalate review."
+                time="12:50 PM"
+              />
             </div>
 
-            <div className="p-6 bg-white border-t border-outline-variant">
+            <div className="p-6 bg-surface-container-lowest border-t border-surface-container-high">
               <div className="relative flex items-center">
                 <input 
                   type="text" 
                   placeholder="Type your message..." 
-                  className="w-full bg-surface-container-low border border-outline-variant rounded-full py-3 px-6 text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                  className="w-full bg-surface-container-low border-none rounded-xl py-4 pl-6 pr-24 text-sm focus:ring-2 focus:ring-primary/20 placeholder-on-surface-variant/50"
                 />
                 <div className="absolute right-3 flex items-center gap-1">
-                  <button className="p-2 text-outline hover:text-on-surface transition-colors">
-                    <Paperclip size={18} />
+                  <button className="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors">
+                    <Paperclip size={20} />
                   </button>
-                  <button className="p-2 text-primary hover:text-primary-container transition-colors">
-                    <Send size={18} />
+                  <button className="p-2 text-primary hover:bg-primary-fixed rounded-lg transition-colors">
+                    <Send size={20} />
                   </button>
                 </div>
               </div>
@@ -143,44 +147,50 @@ export default function ExpandedWorkspaceOverlay({ onNavigate, onClose }: Props)
           </section>
 
           {/* Right Column: Profile & Metadata */}
-          <section className="w-96 hidden xl:flex flex-col bg-surface-container-low border-l border-outline-variant overflow-y-auto no-scrollbar p-6 space-y-8">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="text-[10px] font-bold uppercase tracking-wider text-outline">Tags</h4>
-                <button className="text-xs font-bold text-primary hover:underline">Edit</button>
+          <section className="w-96 hidden xl:flex flex-col bg-surface-container-low border-l border-surface-container-high overflow-y-auto no-scrollbar">
+            <div className="p-6 space-y-8">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-black uppercase tracking-widest text-on-surface-variant">Tags</h4>
+                  <button className="text-xs font-bold text-primary hover:underline">Edit</button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Tag label="Engineering" color="bg-primary-fixed text-on-primary-fixed-variant" />
+                  <Tag label="UI/UX" color="bg-secondary-fixed text-on-secondary-fixed-variant" />
+                  <Tag label="Priority A" color="bg-tertiary-fixed text-on-tertiary-fixed-variant" />
+                  <button className="px-3 py-1 border border-outline-variant/30 text-[11px] font-bold rounded-full text-on-surface-variant hover:bg-white transition-colors">+</button>
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                <Tag label="Engineering" color="bg-primary/10 text-primary" />
-                <Tag label="UI/UX" color="bg-secondary/10 text-secondary" />
-                <Tag label="Priority A" color="bg-tertiary/10 text-tertiary" />
-              </div>
-            </div>
 
-            <div className="bg-white p-5 rounded-xl border border-outline-variant shadow-sm space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="text-[10px] font-bold uppercase tracking-wider text-outline">Customer Profile</h4>
-                <ExternalLink size={14} className="text-outline" />
+              <div className="bg-surface-container-lowest p-5 rounded-xl shadow-sm space-y-4 border border-outline-variant/5">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-black uppercase tracking-widest text-on-surface-variant">Customer Profile</h4>
+                  <ExternalLink size={14} className="text-outline" />
+                </div>
+                <div className="space-y-3">
+                  <ProfileInfo label="Account Type" value="Enterprise" />
+                  <ProfileInfo label="Joined" value="Jan 2022" />
+                  <ProfileInfo label="Lifetime Value" value="$14,200.00" valueClass="text-primary" />
+                </div>
               </div>
-              <div className="space-y-3">
-                <ProfileInfo label="Account Type" value="Enterprise" />
-                <ProfileInfo label="Joined" value="Jan 2022" />
-                <ProfileInfo label="Lifetime Value" value="$14,200.00" valueClass="text-primary" />
-              </div>
-            </div>
 
-            <div className="space-y-4">
-              <h4 className="text-[10px] font-bold uppercase tracking-wider text-outline">Action History</h4>
-              <div className="relative space-y-6 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-outline-variant">
-                <HistoryItem label="Escalated to Tier 2" time="Today at 11:30 AM" active />
-                <HistoryItem label="Attachment Verified" time="Today at 09:15 AM" />
-                <HistoryItem label="Ticket Created" time="Yesterday at 04:45 PM" />
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-black uppercase tracking-widest text-on-surface-variant">Action History</h4>
+                  <button className="text-[10px] font-bold text-on-surface-variant bg-surface-container-high px-2 py-1 rounded hover:bg-surface-container-highest transition-colors">View All</button>
+                </div>
+                <div className="relative space-y-6 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-outline-variant/30">
+                  <HistoryItem label="Escalated to Tier 2" time="Today at 11:30 AM · System" active />
+                  <HistoryItem label="Attachment Verified" time="Today at 09:15 AM · Marcus Thorne" />
+                  <HistoryItem label="Ticket Created" time="Yesterday at 04:45 PM · Julianne Moore" />
+                </div>
               </div>
-            </div>
 
-            <button className="w-full py-3 bg-surface text-on-surface font-bold text-[10px] uppercase tracking-wider rounded-md border border-outline-variant hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
-              <Briefcase size={14} />
-              Configure Cards
-            </button>
+              <button className="w-full flex items-center justify-center gap-2 py-3 bg-white text-on-surface font-bold text-xs uppercase tracking-widest rounded-lg hover:shadow-md transition-all active:scale-95 border border-outline-variant/10">
+                <Briefcase size={16} />
+                Configure Cards
+              </button>
+            </div>
           </section>
         </div>
       </motion.div>

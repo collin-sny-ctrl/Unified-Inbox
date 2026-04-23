@@ -26,63 +26,70 @@ export default function ActionModal({ onNavigate, onClose }: Props) {
         {/* Modal Header */}
         <div className="px-8 pt-8 pb-4 flex justify-between items-start">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-on-surface leading-tight">Escalate Message</h2>
-            <p className="text-on-surface-variant text-sm mt-1">Elevate this thread to specialized support tier.</p>
+            <h2 className="text-2xl font-black tracking-tight text-on-surface leading-none">Escalate Message</h2>
+            <p className="text-on-surface-variant text-xs font-medium mt-2">Elevate this thread to specialized support tier.</p>
           </div>
-          <button onClick={onClose} className="text-outline hover:text-on-surface transition-colors">
+          <button onClick={onClose} className="text-on-surface-variant hover:text-error transition-colors p-1">
             <X size={24} />
           </button>
         </div>
 
         {/* Modal Content */}
-        <div className="px-8 py-4 space-y-6">
+        <div className="px-8 py-4 space-y-8">
           <div className="space-y-3">
-            <label className="text-[10px] text-outline uppercase tracking-wider font-bold">Ticket Priority</label>
+            <label className="text-[10px] text-on-surface-variant uppercase tracking-widest font-black">Ticket Priority</label>
             <div className="flex flex-wrap gap-2">
-              <PriorityOption label="Low" activeColor="peer-checked:bg-secondary/10 peer-checked:text-secondary peer-checked:border-secondary" />
-              <PriorityOption label="Medium" activeColor="peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:border-primary" defaultChecked />
-              <PriorityOption label="High" activeColor="peer-checked:bg-tertiary/10 peer-checked:text-tertiary peer-checked:border-tertiary" />
-              <PriorityOption label="Urgent" activeColor="peer-checked:bg-error/10 peer-checked:text-error peer-checked:border-error" />
+              <PriorityOption label="Low" activeColor="peer-checked:bg-secondary-fixed peer-checked:text-on-secondary-fixed-variant" />
+              <PriorityOption label="Medium" activeColor="peer-checked:bg-primary-fixed peer-checked:text-on-primary-fixed-variant" defaultChecked />
+              <PriorityOption label="High" activeColor="peer-checked:bg-tertiary-fixed peer-checked:text-on-tertiary-fixed-variant" />
+              <PriorityOption label="Urgent" activeColor="peer-checked:bg-error-container peer-checked:text-on-error-container" />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-[10px] text-outline uppercase tracking-wider font-bold">Assignee</label>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-outline" size={16} />
+          <div className="space-y-3">
+            <label className="text-[10px] text-on-surface-variant uppercase tracking-widest font-black">Assignee</label>
+            <div className="relative group">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors" size={18} />
               <input 
                 type="text" 
                 defaultValue="Marcus Aurelius (Curation Lead)"
-                className="w-full bg-surface-container-low border border-outline-variant rounded-md text-sm pl-10 pr-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                className="w-full bg-surface-container-low border-0 border-b-2 border-transparent focus:border-primary focus:ring-0 text-sm pl-10 pr-4 py-3 rounded-t-lg transition-all"
                 placeholder="Search team members..."
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-[10px] text-outline uppercase tracking-wider font-bold">Internal Note</label>
+          <div className="space-y-3">
+            <label className="text-[10px] text-on-surface-variant uppercase tracking-widest font-black">Internal Note</label>
             <textarea 
-              className="w-full bg-surface-container-low border border-outline-variant rounded-md text-sm px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary resize-none transition-all"
+              className="w-full bg-surface-container-low border-0 border-b-2 border-transparent focus:border-primary focus:ring-0 text-sm px-4 py-3 rounded-lg resize-none transition-all placeholder:italic"
               placeholder="Explain the reason for escalation..."
-              rows={3}
+              rows={4}
               defaultValue="Requires high-fidelity asset verification from the archival department. SLA is approaching critical threshold."
             />
           </div>
         </div>
 
         {/* Modal Footer */}
-        <div className="px-8 pb-8 pt-4 flex flex-col sm:flex-row justify-end items-center gap-3">
+        <div className="px-8 pb-8 pt-4 flex flex-col sm:flex-row justify-end items-center gap-4">
           <button 
-            onClick={onClose}
-            className="w-full sm:w-auto px-6 py-2.5 text-sm font-medium text-on-surface-variant hover:bg-surface-container rounded-md transition-all"
+            onClick={() => onNavigate(View.HOST_ANALYTICS)}
+            className="w-full sm:w-auto px-6 py-2.5 text-sm font-bold text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-full transition-all"
           >
-            Cancel
+            Dashboard
           </button>
           <button 
             onClick={() => onNavigate(View.EXPANDED_WORKSPACE)}
-            className="w-full sm:w-auto px-8 py-2.5 text-sm font-medium text-white rounded-md bg-primary shadow-sm hover:bg-primary-container active:scale-95 transition-all"
+            className="w-full sm:w-auto px-8 py-2.5 text-sm font-bold text-white rounded-full bg-gradient-to-r from-primary to-primary-container shadow-xl shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] active:scale-95 transition-all"
           >
             Create Ticket
+          </button>
+          <button 
+            onClick={() => onNavigate(View.TICKETS_DASHBOARD)}
+            className="w-full sm:w-auto px-4 py-2.5 text-xs font-black uppercase tracking-widest text-primary flex items-center gap-1 hover:bg-primary/5 rounded-lg transition-all group"
+          >
+            Escalate
+            <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </motion.div>

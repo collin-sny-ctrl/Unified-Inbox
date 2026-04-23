@@ -1,6 +1,77 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-primary: #00488d;
+  --color-primary-container: #005fb8;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #cadcff;
+  --color-primary-fixed: #d6e3ff;
+  --color-on-primary-fixed-variant: #00468b;
+  
+  --color-secondary: #006a6a;
+  --color-secondary-container: #90efef;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #006e6e;
+  --color-secondary-fixed: #93f2f2;
+  --color-secondary-fixed-dim: #76d6d5;
+  --color-on-secondary-fixed-variant: #004f4f;
+  
+  --color-tertiary: #6c1e9c;
+  --color-tertiary-container: #863cb6;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #f0d0ff;
+  --color-tertiary-fixed: #f4d9ff;
+  --color-on-tertiary-fixed-variant: #6a1b9a;
+  
+  --color-surface: #f9f9fd;
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #424752;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f3f3f7;
+  --color-surface-container: #edeef1;
+  --color-surface-container-high: #e7e8eb;
+  --color-surface-container-highest: #e2e2e6;
+  --color-surface-variant: #e2e2e6;
+  
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+  
+  --color-outline: #727783;
+  --color-outline-variant: #c2c6d4;
+  
+  --color-inverse-surface: #2e3133;
+  --color-inverse-on-surface: #f0f0f4;
+  --color-inverse-primary: #a8c8ff;
+}
+
+@layer base {
+  body {
+    @apply bg-surface text-on-surface font-sans antialiased;
+  }
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.glass-panel {
+  @apply backdrop-blur-3xl bg-surface-container-low/80;
+}
+
+.ambient-shadow {
+  box-shadow: 0 40px 40px -20px rgba(0, 72, 141, 0.06);
+}
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;

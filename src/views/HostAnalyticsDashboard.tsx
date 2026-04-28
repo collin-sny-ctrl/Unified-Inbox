@@ -1,8 +1,10 @@
 import React from 'react';
-import { LayoutDashboard, MessageSquare, Users, BarChart3, Archive, HelpCircle, LogOut, Bell, Settings, ArrowUpRight } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, Users, BarChart3, Archive, HelpCircle, LogOut, Bell, Settings, ArrowUpRight, Share2, Ticket as TicketIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 import { View } from '../types';
 import { cn } from '../lib/utils';
+
+import FloatingMessagingFAB from '../components/FloatingMessagingFAB';
 
 interface Props {
   onNavigate: (view: View) => void;
@@ -10,12 +12,12 @@ interface Props {
 
 export default function HostAnalyticsDashboard({ onNavigate }: Props) {
   return (
-    <div className="flex h-screen overflow-hidden bg-surface">
-      {/* SideNavBar */}
-      <aside className="fixed left-0 top-0 h-full w-64 glass-panel border-r-0 shadow-2xl shadow-primary/5 pt-20 z-40 hidden md:flex flex-col p-4">
-        <div className="mb-8 px-2 flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center">
-            <span className="material-symbols-outlined text-white">architecture</span>
+    <div className="flex min-h-screen overflow-hidden bg-surface">
+      {/* SideNavBar - Consistent fixed glass-panel layout */}
+      <aside className="fixed left-0 top-0 h-screen w-72 glass-panel flex flex-col p-6 space-y-2 shadow-[40px_0_40px_rgba(0,72,141,0.06)] z-50">
+        <div className="flex items-center space-x-3 mb-10 px-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-primary to-primary-container flex items-center justify-center text-white shadow-lg shadow-primary/20">
+             <LayoutDashboard size={20} />
           </div>
           <div>
             <h2 className="text-blue-900 font-black leading-tight text-sm">Precision Editorial</h2>
@@ -24,20 +26,35 @@ export default function HostAnalyticsDashboard({ onNavigate }: Props) {
         </div>
         
         <nav className="flex-1 space-y-1">
-          <NavItem icon={<LayoutDashboard size={20} />} label="Overview" active />
-          <NavItem icon={<MessageSquare size={20} />} label="Messages" />
-          <NavItem icon={<Users size={20} />} label="Team" />
-          <NavItem icon={<BarChart3 size={20} />} label="Reports" />
-          <NavItem icon={<Archive size={20} />} label="Archive" />
+          <NavItem icon={<LayoutDashboard size={20} />} label="Dashboard" active />
+          <NavItem 
+            icon={<TicketIcon size={20} />} 
+            label="Tickets" 
+            onClick={() => onNavigate(View.TICKETS_DASHBOARD)}
+          />
+          <NavItem 
+            icon={<Share2 size={20} />} 
+            label="Social" 
+            onClick={() => onNavigate(View.SOCIAL_MANAGEMENT)}
+          />
         </nav>
 
-        <div className="pt-4 border-t border-surface-container-high space-y-1">
+        <div className="mt-auto pt-6 border-t border-surface-container-high space-y-1">
           <NavItem icon={<HelpCircle size={20} />} label="Help" />
-          <NavItem icon={<LogOut size={20} />} label="Logout" />
+          <NavItem icon={<Settings size={20} />} label="Settings" />
+          <div className="mx-2 mt-6 px-4 py-3 bg-surface-container-low rounded-2xl border border-surface-container-high flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-surface-container-highest border-2 border-primary/20 overflow-hidden shrink-0">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold truncate">Felix Brand</p>
+              <p className="text-[10px] text-on-surface-variant font-medium">Administrator</p>
+            </div>
+          </div>
         </div>
       </aside>
 
-      <div className="flex-1 flex flex-col md:ml-64 overflow-y-auto">
+      <div className="flex-1 flex flex-col ml-72 overflow-y-auto">
         {/* TopNavBar */}
         <header className="fixed top-0 right-0 left-0 md:left-64 h-16 glass-panel z-30 flex justify-between items-center px-6">
           <div className="flex items-center gap-8">
@@ -45,7 +62,7 @@ export default function HostAnalyticsDashboard({ onNavigate }: Props) {
             <nav className="hidden md:flex gap-6 items-center">
               <a href="#" className="font-medium text-sm text-blue-700 border-b-2 border-primary pb-1">Dashboard</a>
               <button 
-                onClick={() => onNavigate(View.ACTION_MODAL)}
+                onClick={() => onNavigate(View.EXPANDED_WORKSPACE)}
                 className="font-medium text-sm text-on-surface-variant hover:text-primary transition-colors"
                 id="workspace-link"
               >
@@ -160,29 +177,24 @@ export default function HostAnalyticsDashboard({ onNavigate }: Props) {
       </div>
 
       {/* Floating Messaging FAB */}
-      <div className="fixed bottom-8 right-8 z-50">
-        <button 
-          aria-label="Open messaging"
-          id="messaging-fab"
-          onClick={() => onNavigate(View.COMPACT_MESSAGING)}
-          className="relative flex items-center justify-center w-14 h-14 bg-primary text-white rounded-full shadow-2xl hover:shadow-primary/30 hover:scale-110 active:scale-95 transition-all duration-300 group"
-        >
-          <span className="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">chat</span>
-          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-error text-[10px] font-bold text-white ring-2 ring-surface">2</span>
-        </button>
-      </div>
+      <FloatingMessagingFAB onNavigate={onNavigate} />
     </div>
   );
 }
 
-function NavItem({ icon, label, active = false }: { icon: React.ReactNode, label: string, active?: boolean }) {
+function NavItem({ icon, label, active = false, onClick }: { icon: React.ReactNode, label: string, active?: boolean, onClick?: () => void }) {
   return (
-    <div className={cn(
-      "px-2 py-2.5 rounded-lg flex items-center gap-3 transition-all duration-300 cursor-pointer",
-      active ? "bg-white text-primary shadow-sm font-bold" : "text-on-surface-variant hover:bg-surface-container hover:translate-x-1"
-    )}>
-      <span className="opacity-70">{icon}</span>
-      <span className="text-[10px] uppercase tracking-widest font-black leading-none">{label}</span>
+    <div 
+      onClick={onClick}
+      className={cn(
+        "mx-4 px-4 py-3 rounded-xl flex items-center gap-4 transition-all duration-300 cursor-pointer group",
+        active ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-on-surface-variant hover:bg-surface-container-high"
+      )}>
+      <span className={cn(active ? "text-white" : "text-primary opacity-70 group-hover:opacity-100 transition-opacity")}>{icon}</span>
+      <span className={cn(
+        "text-sm font-bold tracking-tight",
+        active ? "text-white" : "text-on-surface-variant"
+      )}>{label}</span>
     </div>
   );
 }

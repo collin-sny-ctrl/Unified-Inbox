@@ -1,8 +1,9 @@
 import React from 'react';
-import { ChevronLeft, Bell, Settings, HelpCircle, Ticket as TicketIcon, UserCheck, UserX, CheckCircle2, MoreHorizontal, Lock, Paperclip, Smile, Plus, Search, ExternalLink, Brush, Terminal } from 'lucide-react';
+import { ChevronLeft, Bell, Settings, HelpCircle, Ticket as TicketIcon, UserCheck, UserX, CheckCircle2, MoreHorizontal, Lock, Paperclip, Smile, Plus, Search, ExternalLink, Brush, Terminal, LayoutDashboard, Share2 } from 'lucide-react';
 import { View } from '../types';
 import { cn } from '../lib/utils';
 import { motion } from 'motion/react';
+import FloatingMessagingFAB from '../components/FloatingMessagingFAB';
 
 interface Props {
   onNavigate: (view: View) => void;
@@ -13,25 +14,48 @@ export default function TicketDetailView({ onNavigate }: Props) {
     <div className="flex min-h-screen bg-surface">
       {/* SideNavBar */}
       <aside className="fixed left-0 top-0 h-screen w-72 glass-panel flex flex-col p-6 space-y-2 shadow-[40px_0_40px_rgba(0,72,141,0.06)] z-50">
-        <div className="flex flex-col mb-8 px-4">
-          <h1 className="text-xl font-bold tracking-tight text-blue-900 leading-none">Precision Editorial</h1>
-          <p className="text-xs font-black text-slate-500 uppercase tracking-widest mt-1">Ticketing System</p>
+        <div className="flex items-center space-x-3 mb-10 px-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-primary to-primary-container flex items-center justify-center text-white shadow-lg shadow-primary/20">
+            <TicketIcon size={20} />
+          </div>
+          <div>
+            <h2 className="text-blue-900 font-black leading-tight text-sm">Priority Support</h2>
+            <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Ticket Detail</p>
+          </div>
         </div>
+
         <nav className="flex-1 flex flex-col space-y-1">
           <TicketingNavItem 
+            icon={<LayoutDashboard size={20} />} 
+            label="Dashboard" 
+            onClick={() => onNavigate(View.HOST_ANALYTICS)}
+          />
+          <TicketingNavItem 
             icon={<TicketIcon size={20} />} 
-            label="All Tickets" 
+            label="Tickets" 
             id="all-tickets-link"
             onClick={() => onNavigate(View.TICKETS_DASHBOARD)} 
           />
-          <TicketingNavItem icon={<UserCheck size={20} />} label="My Tickets" active />
-          <TicketingNavItem icon={<UserX size={20} />} label="Unassigned" />
-          <TicketingNavItem icon={<CheckCircle2 size={20} />} label="Solved" />
+          <TicketingNavItem 
+            icon={<Share2 size={20} />} 
+            label="Social" 
+            onClick={() => onNavigate(View.SOCIAL_MANAGEMENT)}
+          />
         </nav>
-        <button className="bg-gradient-to-r from-primary to-primary-container text-white w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
-          <Plus size={18} />
-          <span>New Ticket</span>
-        </button>
+
+        <div className="mt-auto pt-6 border-t border-surface-container-high space-y-1">
+          <TicketingNavItem icon={<HelpCircle size={20} />} label="Help" />
+          <TicketingNavItem icon={<Settings size={20} />} label="Settings" />
+          <div className="mx-2 mt-6 px-4 py-3 bg-surface-container-low rounded-2xl border border-surface-container-high flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-surface-container-highest border-2 border-primary/20 overflow-hidden shrink-0">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold truncate">Felix Brand</p>
+              <p className="text-[10px] text-on-surface-variant font-medium">Administrator</p>
+            </div>
+          </div>
+        </div>
       </aside>
 
       <main className="flex-1 ml-72 h-screen flex flex-col overflow-hidden">
@@ -198,6 +222,7 @@ export default function TicketDetailView({ onNavigate }: Props) {
           </motion.div>
         </div>
       </main>
+      <FloatingMessagingFAB onNavigate={onNavigate} />
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Edit3, Search, Bell, Settings, HelpCircle, Ticket as TicketIcon, UserCheck, UserX, CheckCircle2, Filter, LayoutGrid, ListFilter, ChevronLeft, ChevronRight, MoreHorizontal, Bolt, Calendar } from 'lucide-react';
+import { LayoutDashboard, LayoutGrid, Search, Bell, Settings, HelpCircle, Ticket as TicketIcon, UserCheck, UserX, CheckCircle2, Filter, ListFilter, ChevronLeft, ChevronRight, MoreHorizontal, Bolt, Calendar, Share2 } from 'lucide-react';
 import { View, Ticket } from '../types';
 import { cn } from '../lib/utils';
 import { motion } from 'motion/react';
+import FloatingMessagingFAB from '../components/FloatingMessagingFAB';
 
 interface Props {
   onNavigate: (view: View) => void;
@@ -55,29 +56,40 @@ export default function TicketsDashboard({ onNavigate }: Props) {
       <aside className="fixed left-0 top-0 h-screen w-72 glass-panel flex flex-col p-6 space-y-2 shadow-[40px_0_40px_rgba(0,72,141,0.06)] z-50">
         <div className="flex items-center space-x-3 mb-10 px-4">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-primary to-primary-container flex items-center justify-center text-white shadow-lg shadow-primary/20">
-            <Edit3 size={20} />
+            <TicketIcon size={20} />
           </div>
           <div>
-            <h1 className="text-xl font-black tracking-tight text-blue-900 leading-none">Precision Editorial</h1>
-            <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mt-1">Ticketing System</p>
+            <h2 className="text-blue-900 font-black leading-tight text-sm">Priority Support</h2>
+            <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Ticket Hub</p>
           </div>
         </div>
-
+        
         <nav className="flex-1 space-y-1">
-          <TicketingNavItem icon={<TicketIcon size={20} />} label="All Tickets" active />
           <TicketingNavItem 
-            icon={<UserCheck size={20} />} 
-            label="My Tickets" 
-            onClick={() => onNavigate(View.TICKET_DETAIL)}
+            icon={<LayoutDashboard size={20} />} 
+            label="Dashboard" 
+            onClick={() => onNavigate(View.HOST_ANALYTICS)}
           />
-          <TicketingNavItem icon={<UserX size={20} />} label="Unassigned" />
-          <TicketingNavItem icon={<CheckCircle2 size={20} />} label="Solved" />
+          <TicketingNavItem icon={<TicketIcon size={20} />} label="Tickets" active />
+          <TicketingNavItem 
+            icon={<Share2 size={20} />} 
+            label="Social" 
+            onClick={() => onNavigate(View.SOCIAL_MANAGEMENT)}
+          />
         </nav>
 
-        <div className="pt-4 border-t border-surface-container-high">
-          <button className="w-full bg-gradient-to-r from-primary to-primary-container text-white rounded-xl py-3 px-4 flex items-center justify-center space-x-2 font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
-            <span className="text-sm">New Ticket</span>
-          </button>
+        <div className="mt-auto pt-6 border-t border-surface-container-high space-y-1">
+          <TicketingNavItem icon={<HelpCircle size={20} />} label="Help" />
+          <TicketingNavItem icon={<Settings size={20} />} label="Settings" />
+          <div className="mx-2 mt-6 px-4 py-3 bg-surface-container-low rounded-2xl border border-surface-container-high flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-surface-container-highest border-2 border-primary/20 overflow-hidden shrink-0">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold truncate">Felix Brand</p>
+              <p className="text-[10px] text-on-surface-variant font-medium">Administrator</p>
+            </div>
+          </div>
         </div>
       </aside>
 
@@ -220,6 +232,7 @@ export default function TicketsDashboard({ onNavigate }: Props) {
           </div>
         </div>
       </main>
+      <FloatingMessagingFAB onNavigate={onNavigate} />
     </div>
   );
 }

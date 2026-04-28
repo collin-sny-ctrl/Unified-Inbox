@@ -1,7 +1,8 @@
-import React from 'react';
-import { Search, X, Maximize2, Phone, MoreVertical, Send, PlusCircle } from 'lucide-react';
-import { motion } from 'motion/react';
+import React, { useState } from 'react';
+import { Search, X, Maximize2, Phone, MoreVertical, Send, PlusCircle, CheckCircle2 } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import { View } from '../../types';
+import { cn } from '../../lib/utils';
 
 interface Props {
   onNavigate: (view: View) => void;
@@ -9,6 +10,19 @@ interface Props {
 }
 
 export default function CompactMessagingOverlay({ onNavigate, onClose }: Props) {
+  const [selectedMessageIds, setSelectedMessageIds] = useState<number[]>([]);
+
+  const toggleSelection = (id: number) => {
+    setSelectedMessageIds(prev => 
+      prev.includes(id) ? prev.filter(mid => mid !== id) : [...prev, id]
+    );
+  };
+
+  const messages = [
+    { id: 1, type: 'inbound', text: "Hello, I'm analyzing the Axiom Carbon dashboard for our firm. Is the architectural layer responsive to high-velocity API changes in the editorial view?", time: "08:42 AM" },
+    { id: 2, type: 'outbound', text: "Absolutely. The system utilizes a tonal depth hierarchy that adapts in real-time. Data density shifts dynamically without compromising the editorial \"breathing room.\"", time: "08:44 AM" }
+  ];
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -20,10 +34,38 @@ export default function CompactMessagingOverlay({ onNavigate, onClose }: Props) 
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
-        className="flex w-full max-w-[640px] h-[480px] rounded-xl overflow-hidden shadow-2xl glass-panel border border-outline-variant/15 flex-col"
+        className="flex w-full max-w-[640px] h-[480px] rounded-xl overflow-hidden shadow-2xl bg-white border border-outline-variant/15 flex-col relative"
       >
+        {/* Bulk Actions Bar */}
+        <AnimatePresence>
+          {selectedMessageIds.length > 0 && (
+            <motion.div 
+              initial={{ y: -50 }}
+              animate={{ y: 0 }}
+              exit={{ y: -50 }}
+              className="absolute top-0 left-0 right-0 h-12 bg-primary text-white z-20 flex items-center justify-between px-6 shadow-md"
+            >
+              <div className="flex items-center gap-3">
+                <button onClick={() => setSelectedMessageIds([])} className="p-1 hover:bg-white/10 rounded">
+                  <X size={16} />
+                </button>
+                <span className="text-[11px] font-bold uppercase tracking-widest">{selectedMessageIds.length} Selected</span>
+              </div>
+              <div className="flex gap-2">
+                <button className="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-[10px] font-black uppercase tracking-tighter">Tag</button>
+                <button 
+                  onClick={() => onNavigate(View.ACTION_MODAL)}
+                  className="px-3 py-1 bg-white text-primary rounded text-[10px] font-black uppercase tracking-tighter"
+                >
+                  Escalate
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Window Header */}
-        <div className="flex items-center justify-between px-5 h-14 bg-primary text-on-primary">
+        <div className="flex items-center justify-between px-5 h-14 bg-primary text-on-primary shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-2.5 h-2.5 bg-secondary-container rounded-full animate-pulse"></div>
             <span className="font-bold tracking-tight">Active Inbound</span>
@@ -100,19 +142,34 @@ export default function CompactMessagingOverlay({ onNavigate, onClose }: Props) 
                 <span className="text-[10px] font-bold text-outline bg-surface-container px-2 py-0.5 rounded uppercase tracking-tighter">Today, 08:40 AM</span>
               </div>
               
-              <div className="flex flex-col items-start max-w-[85%]">
-                <div className="bg-surface-container-low px-4 py-3 rounded-tr-xl rounded-bl-xl rounded-br-xl">
-                  <p className="text-xs leading-relaxed text-on-surface">Hello, I'm analyzing the Axiom Carbon dashboard for our firm. Is the architectural layer responsive to high-velocity API changes in the editorial view?</p>
+              {messages.map((msg) => (
+                <div 
+                  key={msg.id} 
+                  className={cn(
+                    "flex flex-col max-w-[85%] transition-all cursor-pointer group",
+                    msg.type === 'outbound' ? "items-end ml-auto" : "items-start"
+                  )}
+                  onClick={() => toggleSelection(msg.id)}
+                >
+                  <div className={cn(
+                    "px-4 py-3 rounded-xl relative overflow-hidden transition-all",
+                    msg.type === 'outbound' 
+                      ? "bg-primary text-on-primary rounded-tr-none shadow-lg shadow-primary/10" 
+                      : "bg-surface-container-low text-on-surface rounded-tl-none border border-outline-variant/10",
+                    selectedMessageIds.includes(msg.id) && "ring-2 ring-primary ring-offset-1 scale-[1.02]"
+                  )}>
+                    {selectedMessageIds.includes(msg.id) && (
+                      <div className="absolute top-1 right-1">
+                        <CheckCircle2 size={12} className={msg.type === 'outbound' ? "text-white" : "text-primary"} />
+                      </div>
+                    )}
+                    <p className="text-xs leading-relaxed">{msg.text}</p>
+                  </div>
+                  <span className="text-[9px] text-outline mt-1 mx-1">
+                    {msg.time} {msg.type === 'outbound' && '· Delivered'}
+                  </span>
                 </div>
-                <span className="text-[9px] text-outline mt-1 ml-1">08:42 AM</span>
-              </div>
-
-              <div className="flex flex-col items-end max-w-[85%] ml-auto">
-                <div className="bg-primary text-on-primary px-4 py-3 rounded-tl-xl rounded-bl-xl rounded-br-xl shadow-lg shadow-primary/10">
-                  <p className="text-xs leading-relaxed">Absolutely. The system utilizes a tonal depth hierarchy that adapts in real-time. Data density shifts dynamically without compromising the editorial "breathing room."</p>
-                </div>
-                <span className="text-[9px] text-outline mt-1 mr-1">08:44 AM · Delivered</span>
-              </div>
+              ))}
             </div>
 
             <div className="p-4 border-t border-outline-variant/10">

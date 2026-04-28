@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { View } from './types';
 import HostAnalyticsDashboard from './views/HostAnalyticsDashboard';
 import TicketsDashboard from './views/TicketsDashboard';
 import TicketDetailView from './views/TicketDetailView';
+import SocialManagementView from './views/SocialManagementView';
 import ExpandedWorkspaceOverlay from './views/ExpandedWorkspaceOverlay';
 import CompactMessagingOverlay from './components/overlays/CompactMessagingOverlay';
 import ActionModal from './components/modals/ActionModal';
+import { cn } from './lib/utils';
 
 // Transition configurations
 const transitions = {
@@ -36,6 +38,8 @@ const transitions = {
   }
 };
 
+const OVERLAYS = [View.EXPANDED_WORKSPACE, View.COMPACT_MESSAGING, View.ACTION_MODAL];
+
 export default function App() {
   const [currentView, setCurrentView] = useState<View>(View.HOST_ANALYTICS);
   const [history, setHistory] = useState<View[]>([View.HOST_ANALYTICS]);
@@ -58,67 +62,101 @@ export default function App() {
     }
   };
 
+  const baseView = useMemo(() => {
+    return [...history].reverse().find(v => !OVERLAYS.includes(v)) || View.HOST_ANALYTICS;
+  }, [history]);
+
+  const activeOverlay = OVERLAYS.includes(currentView) ? currentView : null;
   const currentTransition = transitions[lastTransition === 'none' ? 'none' : lastTransition];
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-surface">
-      <AnimatePresence mode="popLayout" initial={false}>
-        <motion.div
-          key={currentView}
-          className="absolute inset-0 w-full h-full"
-          initial={currentTransition.initial}
-          animate={currentTransition.animate}
-          exit={currentTransition.exit}
-          transition={currentTransition.transition}
-        >
-          {currentView === View.HOST_ANALYTICS && (
-            <HostAnalyticsDashboard 
-              onNavigate={(view) => {
-                const trans = view === View.COMPACT_MESSAGING ? 'slide_up' : 'push';
-                navigate(view, trans);
-              }} 
-            />
-          )}
+      {/* Base Layer */}
+      <div className={cn(
+        "absolute inset-0 w-full h-full transition-all duration-300 ease-in-out",
+        activeOverlay ? "pointer-events-none" : ""
+      )}>
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.div
+            key={baseView}
+            className="absolute inset-0 w-full h-full"
+            initial={currentTransition.initial}
+            animate={currentTransition.animate}
+            exit={currentTransition.exit}
+            transition={currentTransition.transition}
+          >
+            {baseView === View.HOST_ANALYTICS && (
+              <HostAnalyticsDashboard 
+                onNavigate={(view) => {
+                  const trans = view === View.COMPACT_MESSAGING ? 'slide_up' : 'push';
+                  navigate(view, trans);
+                }} 
+              />
+            )}
 
-          {currentView === View.TICKETS_DASHBOARD && (
-            <TicketsDashboard 
-              onNavigate={(view) => navigate(view, 'push')} 
-            />
-          )}
+            {baseView === View.TICKETS_DASHBOARD && (
+              <TicketsDashboard 
+                onNavigate={(view) => navigate(view, 'push')} 
+              />
+            )}
 
-          {currentView === View.TICKET_DETAIL && (
-            <TicketDetailView 
-              onNavigate={(view) => {
-                if (view === View.TICKETS_DASHBOARD) goBack('push_back');
-                else navigate(view, 'push');
-              }} 
-            />
-          )}
+            {baseView === View.TICKET_DETAIL && (
+              <TicketDetailView 
+                onNavigate={(view) => {
+                  if (view === View.TICKETS_DASHBOARD) goBack('push_back');
+                  else navigate(view, 'push');
+                }} 
+              />
+            )}
 
-          {currentView === View.EXPANDED_WORKSPACE && (
-            <ExpandedWorkspaceOverlay 
-              onNavigate={(view) => navigate(view, 'push')}
-              onClose={() => goBack('push_back')}
-            />
-          )}
+            {baseView === View.SOCIAL_MANAGEMENT && (
+              <SocialManagementView 
+                onNavigate={(view) => navigate(view, 'push')} 
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
-          {currentView === View.COMPACT_MESSAGING && (
-            <CompactMessagingOverlay 
-              onNavigate={(view) => navigate(view, 'push')}
-              onClose={() => goBack('push_back')}
-            />
-          )}
+      {/* Overlay Layer */}
+      <AnimatePresence>
+        {activeOverlay && (
+          <motion.div
+            key={activeOverlay}
+            className="absolute inset-0 z-50 overflow-hidden"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+          >
+            {activeOverlay === View.EXPANDED_WORKSPACE && (
+              <ExpandedWorkspaceOverlay 
+                onNavigate={(view) => navigate(view, 'push')}
+                onClose={() => goBack('push_back')}
+              />
+            )}
 
-          {currentView === View.ACTION_MODAL && (
-            <ActionModal 
-              onNavigate={(view) => {
-                if (view === View.HOST_ANALYTICS) goBack('push_back');
-                else navigate(view, 'push');
-              }}
-              onClose={() => goBack('push_back')}
-            />
-          )}
-        </motion.div>
+            {activeOverlay === View.COMPACT_MESSAGING && (
+              <CompactMessagingOverlay 
+                onNavigate={(view) => navigate(view, 'push')}
+                onClose={() => goBack('push_back')}
+              />
+            )}
+
+            {activeOverlay === View.ACTION_MODAL && (
+              <ActionModal 
+                onNavigate={(view) => {
+                  if (view === View.HOST_ANALYTICS) {
+                    goBack('push_back');
+                  } else {
+                    navigate(view, 'push');
+                  }
+                }}
+                onClose={() => goBack('push_back')}
+              />
+            )}
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );

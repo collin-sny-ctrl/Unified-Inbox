@@ -5,6 +5,7 @@ export enum View {
   ACTION_MODAL = 'action_modal',
   TICKETS_DASHBOARD = 'tickets_dashboard',
   TICKET_DETAIL = 'ticket_detail',
+  SOCIAL_MANAGEMENT = 'social_management',
 }
 
 export type NavigationTransition = 'push' | 'push_back' | 'slide_up' | 'none';

@@ -28,13 +28,13 @@ export default function CompactMessagingOverlay({ onNavigate, onClose }: Props) 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[60] bg-on-background/20 backdrop-blur-[2px] pointer-events-auto flex items-end justify-end p-6"
+      className="fixed inset-0 z-[60] pointer-events-none flex items-end justify-end p-8"
     >
       <motion.div 
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
-        className="flex w-full max-w-[640px] h-[480px] rounded-xl overflow-hidden shadow-2xl bg-white border border-outline-variant/15 flex-col relative"
+        className="flex w-full max-w-[640px] h-[480px] rounded-xl overflow-hidden shadow-2xl bg-white border border-outline-variant/15 flex-col relative pointer-events-auto"
       >
         {/* Bulk Actions Bar */}
         <AnimatePresence>

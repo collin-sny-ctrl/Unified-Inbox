@@ -74,7 +74,7 @@ export default function App() {
       {/* Base Layer */}
       <div className={cn(
         "absolute inset-0 w-full h-full transition-all duration-300 ease-in-out",
-        activeOverlay ? "pointer-events-none" : ""
+        (activeOverlay && activeOverlay !== View.COMPACT_MESSAGING) ? "pointer-events-none" : ""
       )}>
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div

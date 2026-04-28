@@ -19,9 +19,25 @@ const SCHEDULED_POSTS = [
   { id: 4, day: 22, platform: 'instagram', type: 'video', text: 'Check out this smooth transition.', time: '09:00 AM' },
 ];
 
+interface Post {
+  id: number;
+  day: number;
+  platform: 'instagram' | 'twitter' | 'facebook';
+  type: 'text' | 'image' | 'video';
+  text: string;
+  time: string;
+}
+
 export default function SocialManagementView({ onNavigate }: Props) {
+  const [allPosts, setAllPosts] = useState<Post[]>(SCHEDULED_POSTS as Post[]);
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [isScheduling, setIsScheduling] = useState(false);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
+
+  // Form states
+  const [postText, setPostText] = useState('');
+  const [postPlatform, setPostPlatform] = useState<'instagram' | 'twitter' | 'facebook'>('instagram');
+  const [postTime, setPostTime] = useState('10:00');
 
   // Generate calendar days for April (30 days, starts on Tuesday which is index 2)
   const daysInMonth = 30;
@@ -33,8 +49,60 @@ export default function SocialManagementView({ onNavigate }: Props) {
   const handleDateClick = (day: number | null) => {
     if (day) {
       setSelectedDate(day);
+      setEditingPost(null);
+      setPostText('');
+      setPostPlatform('instagram');
+      setPostTime('10:00');
       setIsScheduling(true);
     }
+  };
+
+  const handlePostClick = (e: React.MouseEvent, post: Post) => {
+    e.stopPropagation();
+    setSelectedDate(post.day);
+    setEditingPost(post);
+    setPostText(post.text);
+    setPostPlatform(post.platform);
+    // Rough conversion of "10:00 AM" to "10:00" for time input
+    const [time, period] = post.time.split(' ');
+    let [hours, minutes] = time.split(':');
+    if (period === 'PM' && hours !== '12') hours = String(parseInt(hours) + 12);
+    if (period === 'AM' && hours === '12') hours = '00';
+    setPostTime(`${hours.padStart(2, '0')}:${minutes}`);
+    setIsScheduling(true);
+  };
+
+  const handleSavePost = () => {
+    if (!selectedDate) return;
+
+    // Helper to convert 23:00 to 11:00 PM
+    const formatTime = (t: string) => {
+      const [h, m] = t.split(':');
+      const hours = parseInt(h);
+      const period = hours >= 12 ? 'PM' : 'AM';
+      const displayHours = hours % 12 || 12;
+      return `${displayHours}:${m} ${period}`;
+    };
+
+    if (editingPost) {
+      setAllPosts(prev => prev.map(p => p.id === editingPost.id ? {
+        ...p,
+        text: postText,
+        platform: postPlatform,
+        time: formatTime(postTime)
+      } : p));
+    } else {
+      const newPost: Post = {
+        id: Math.max(0, ...allPosts.map(p => p.id)) + 1,
+        day: selectedDate,
+        platform: postPlatform,
+        type: 'text',
+        text: postText,
+        time: formatTime(postTime)
+      };
+      setAllPosts(prev => [...prev, newPost]);
+    }
+    setIsScheduling(false);
   };
 
   return (
@@ -122,7 +190,7 @@ export default function SocialManagementView({ onNavigate }: Props) {
 
               <div className="grid grid-cols-7">
                 {allDays.map((day, index) => {
-                  const dayPosts = day ? SCHEDULED_POSTS.filter(p => p.day === day) : [];
+                  const dayPosts = day ? allPosts.filter(p => p.day === day) : [];
                   const isToday = day === 28;
                   
                   return (
@@ -152,8 +220,9 @@ export default function SocialManagementView({ onNavigate }: Props) {
                             {dayPosts.map(post => (
                               <div 
                                 key={post.id} 
+                                onClick={(e) => handlePostClick(e, post)}
                                 className={cn(
-                                  "group relative px-2 py-1.5 rounded-lg border flex items-center gap-2 overflow-hidden",
+                                  "group relative px-2 py-1.5 rounded-lg border flex items-center gap-2 overflow-hidden hover:scale-105 transition-transform",
                                   post.platform === 'instagram' ? "bg-pink-500/10 border-pink-500/20 text-pink-700" :
                                   post.platform === 'twitter' ? "bg-sky-500/10 border-sky-500/20 text-sky-700" :
                                   "bg-blue-600/10 border-blue-600/20 text-blue-700"
@@ -200,7 +269,7 @@ export default function SocialManagementView({ onNavigate }: Props) {
               className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col"
             >
               <div className="h-14 flex items-center justify-between px-8 bg-surface-container-low border-b border-surface-container-high">
-                <h3 className="font-bold tracking-tight">Schedule Post for April {selectedDate}</h3>
+                <h3 className="font-bold tracking-tight">{editingPost ? 'Edit' : 'Schedule'} Post for April {selectedDate}</h3>
                 <button onClick={() => setIsScheduling(false)} className="p-2 hover:bg-surface-container rounded-full transition-colors">
                   <Plus className="rotate-45" size={20} />
                 </button>
@@ -210,15 +279,17 @@ export default function SocialManagementView({ onNavigate }: Props) {
                 <div>
                   <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant block mb-3">Platform</label>
                   <div className="flex gap-4">
-                    <PlatformButton active icon={<Instagram size={20} />} label="Instagram" />
-                    <PlatformButton icon={<Twitter size={20} />} label="Twitter" />
-                    <PlatformButton icon={<Facebook size={20} />} label="Facebook" />
+                    <PlatformButton active={postPlatform === 'instagram'} onClick={() => setPostPlatform('instagram')} icon={<Instagram size={20} />} label="Instagram" />
+                    <PlatformButton active={postPlatform === 'twitter'} onClick={() => setPostPlatform('twitter')} icon={<Twitter size={20} />} label="Twitter" />
+                    <PlatformButton active={postPlatform === 'facebook'} onClick={() => setPostPlatform('facebook')} icon={<Facebook size={20} />} label="Facebook" />
                   </div>
                 </div>
 
                 <div>
                   <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant block mb-3">Post Content</label>
                   <textarea 
+                    value={postText}
+                    onChange={(e) => setPostText(e.target.value)}
                     placeholder="Write your caption here..."
                     className="w-full h-32 p-4 bg-surface-container rounded-2xl border-none focus:ring-2 focus:ring-primary/20 text-sm resize-none"
                   />
@@ -242,17 +313,22 @@ export default function SocialManagementView({ onNavigate }: Props) {
                     <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant block mb-3">Schedule Time</label>
                     <div className="flex items-center gap-2 bg-surface-container h-12 px-4 rounded-xl">
                       <Clock size={18} className="text-on-surface-variant" />
-                      <input type="time" className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full" defaultValue="10:00" />
+                      <input 
+                        type="time" 
+                        value={postTime}
+                        onChange={(e) => setPostTime(e.target.value)}
+                        className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full" 
+                      />
                     </div>
                   </div>
                 </div>
 
                 <button 
-                  onClick={() => setIsScheduling(false)}
+                  onClick={handleSavePost}
                   className="w-full h-14 bg-primary text-white rounded-2xl font-black uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all mt-4 flex items-center justify-center gap-3"
                 >
                   <Send size={18} />
-                  <span>Schedule Post</span>
+                  <span>{editingPost ? 'Save Changes' : 'Schedule Post'}</span>
                 </button>
               </div>
             </motion.div>
@@ -282,12 +358,14 @@ function SocialNavItem({ icon, label, active = false, onClick }: { icon: React.R
   );
 }
 
-function PlatformButton({ icon, label, active = false }: { icon: React.ReactNode, label: string, active?: boolean }) {
+function PlatformButton({ icon, label, active = false, onClick }: { icon: React.ReactNode, label: string, active?: boolean, onClick?: () => void }) {
   return (
-    <button className={cn(
-      "flex-1 py-4 rounded-2xl border-2 flex flex-col items-center gap-2 transition-all",
-      active ? "border-primary bg-primary/5 text-primary" : "border-surface-container-high text-on-surface-variant hover:border-surface-container-highest"
-    )}>
+    <button 
+      onClick={onClick}
+      className={cn(
+        "flex-1 py-4 rounded-2xl border-2 flex flex-col items-center gap-2 transition-all",
+        active ? "border-primary bg-primary/5 text-primary" : "border-surface-container-high text-on-surface-variant hover:border-surface-container-highest"
+      )}>
       {icon}
       <span className="text-[10px] font-black uppercase tracking-widest">{label}</span>
     </button>
